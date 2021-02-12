@@ -10,8 +10,11 @@ public class ThreadState {
         );
         first.start();
         second.start();
-        first.join();
-        second.join();
-        System.out.println("Работа завершина");
+        while (first.getState() != Thread.State.TERMINATED && second.getState() != Thread.State.TERMINATED ) {
+            System.out.println(first.getState());
+        }
+        //if(first.getState() != Thread.State.TERMINATED && second.getState() != Thread.State.TERMINATED) {
+            System.out.println("THE END");
+
     }
 }
