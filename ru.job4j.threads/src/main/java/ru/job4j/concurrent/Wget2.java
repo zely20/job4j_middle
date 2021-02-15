@@ -20,9 +20,9 @@ public class Wget2 implements Runnable {
         String file = url;
         try (BufferedInputStream in = new BufferedInputStream(new URL(file).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
-            byte[] dataBuffer = new byte[1024];
+            byte[] dataBuffer = new byte[speed];
             int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+            while ((bytesRead = in.read(dataBuffer, 0, speed)) != -1) {
                 long start = System.currentTimeMillis();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 long end = System.currentTimeMillis();
