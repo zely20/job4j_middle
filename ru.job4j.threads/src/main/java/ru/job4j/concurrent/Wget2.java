@@ -37,7 +37,6 @@ public class Wget2 implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println(args.length);
         if(args.length == 2) {
             String url = args[0];
             int speed = Integer.parseInt(args[1]);
