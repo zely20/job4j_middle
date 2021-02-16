@@ -22,8 +22,8 @@ public class Wget2 implements Runnable {
              FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
             byte[] dataBuffer = new byte[speed];
             int bytesRead;
+            long start = System.currentTimeMillis();
             while ((bytesRead = in.read(dataBuffer, 0, speed)) != -1) {
-                long start = System.currentTimeMillis();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 long end = System.currentTimeMillis();
                 long dif = end - start;
@@ -37,10 +37,15 @@ public class Wget2 implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        String url = args[0];
-        int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new Wget2(url, speed));
-        wget.start();
-        wget.join();
+        System.out.println(args.length);
+        if(args.length == 2) {
+            String url = args[0];
+            int speed = Integer.parseInt(args[1]);
+            Thread wget = new Thread(new Wget2(url, speed));
+            wget.start();
+            wget.join();
+        } else {
+            System.out.println("Parameters not set");
+        }
     }
 }
