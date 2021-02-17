@@ -30,6 +30,7 @@ public class Wget2 implements Runnable {
                 if (dif < 1000) {
                     Thread.sleep(1000 - dif);
                 }
+                start = System.currentTimeMillis();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
