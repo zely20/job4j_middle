@@ -15,42 +15,26 @@ public class ParseFile {
         return file;
     }
 
-    public synchronized String getContent(Predicate<Integer> pred) throws IOException {
-        String output = "";
+    public synchronized StringBuilder getContent(Predicate<Integer> pred) throws IOException {
+        StringBuilder output = new StringBuilder();
         int data;
         try (InputStream i = new FileInputStream(file)) {
             while ((data = i.read()) > 0) {
-                if (pred.test(0x80)) {
-                    output += (char) data;
+                if (pred.test(data)) {
+                    output.append(data);
+
                 }
             }
         }
         return output;
     }
 
-
     public synchronized String getContent() throws IOException {
-        String output = "";
-        int data;
-        try (InputStream i = new FileInputStream(file)) {
-            while ((data = i.read()) > 0) {
-                output += (char) data;
-            }
-        }
-        return output;
+        return getContent(data -> true).toString();
     }
 
     public synchronized String getContentWithoutUnicode() throws IOException {
-        String output = "";
-        int data;
-        try (InputStream i = new FileInputStream(file)) {
-            while ((data = i.read()) > 0) {
-                if (data < 0x80) {
-                    output += (char) data;
-                }
-            }
-        }
-        return output;
+        return getContent(data -> data < 0x80).toString();
     }
 
     public synchronized void saveContent(String content) throws IOException {
