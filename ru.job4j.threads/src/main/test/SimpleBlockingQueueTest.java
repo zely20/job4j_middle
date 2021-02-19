@@ -27,4 +27,13 @@ public class SimpleBlockingQueueTest {
         consumer.join();
         assertThat(queue.size(), is(0));
     }
+
+    @Test
+    public void testTwo() throws InterruptedException {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        Thread producer  = new Thread(() -> queue.offer(1));
+        producer.start();
+        producer.join();
+        assertThat(queue.poll(), is(1));
+    }
 }
