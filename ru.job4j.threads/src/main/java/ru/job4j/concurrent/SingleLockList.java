@@ -9,17 +9,17 @@ import java.util.Objects;
 @ThreadSafe
 public class SingleLockList<T> implements Iterable<T> {
     @GuardedBy("this")
-    private volatile SimpleArray<T> list = new SimpleArray<>();
+    private final SimpleArray<T> list = new SimpleArray<>();
 
-    public void add(T value) {
+    public synchronized void add(T value) {
         list.add(value);
     }
 
-    public T get(int index) {
+    public synchronized T get(int index) {
         return list.get(index);
     }
 
-    private SimpleArray<T> copy(SimpleArray<T> inList){
+    private synchronized SimpleArray<T> copy(SimpleArray<T> inList){
         SimpleArray<T> temp = new SimpleArray<>();
         for (T ob : inList) {
             temp.add(ob);
@@ -28,7 +28,7 @@ public class SingleLockList<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public synchronized Iterator<T> iterator() {
         return copy(this.list).iterator();
     }
 }
