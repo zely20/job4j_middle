@@ -8,42 +8,51 @@ import java.util.Map;
 @ThreadSafe
 public class UserStorage {
 
-    final Map<Integer, User2> users = new HashMap<>();
+    private final Map<Integer, User2> users = new HashMap<>();
 
-    public synchronized boolean add (User2 user){
-        if(user != null){
-            users.put(user.getId(),user);
+    public synchronized boolean add(User2 user) {
+        if (user != null) {
+            users.putIfAbsent(user.getId(), user);
             return true;
         }
         return false;
     }
-    public synchronized boolean update(User2 user){
-        if(users.containsKey(user.getId())){
-            users.put(user.getId(),user);
+
+    public synchronized boolean update(User2 user) {
+        if (users.replace(user.getId(), user) != null) {
             return true;
         }
         return false;
     }
-    public synchronized boolean delete(User2 user){
-        if (users.containsKey(user.getId())) {
-            users.remove(user.getId());
+
+    public synchronized boolean delete(User2 user) {
+        if (users.remove(user.getId(), user) == true) {
             return true;
         }
         return false;
     }
-    public synchronized void transfer(int fromId, int toId, int amount){
-        User2 userTempFirst = users.get(fromId);
-        User2 userTempSecond = users.get(toId);
-        userTempFirst.setAmount(userTempFirst.getAmount() - amount);
-        userTempSecond.setAmount(userTempSecond.getAmount() + amount);
-        update(userTempFirst);
-        update(userTempSecond);
+
+    public synchronized void transfer(int fromId, int toId, int amount) {
+        User2 userTempFirst = null;
+        User2 userTempSecond = null;
+        if (users.get(fromId) != null) {
+            userTempFirst = users.get(fromId);
+        }
+        if (users.get(toId) != null) {
+            userTempSecond = users.get(toId);
+        }
+        if (userTempFirst.getAmount() > amount) {
+            userTempFirst.setAmount(userTempFirst.getAmount() - amount);
+            userTempSecond.setAmount(userTempSecond.getAmount() + amount);
+            update(userTempFirst);
+            update(userTempSecond);
+        }
     }
 }
 
 class User2{
-    private volatile int id;
-    private volatile int amount;
+    private int id;
+    private int amount;
 
     public User2(int id, int amount) {
         this.id = id;
