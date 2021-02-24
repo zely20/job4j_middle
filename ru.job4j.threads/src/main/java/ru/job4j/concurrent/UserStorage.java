@@ -26,22 +26,15 @@ public class UserStorage {
     }
 
     public synchronized boolean delete(User2 user) {
-        if (users.remove(user.getId(), user) == true) {
-            return true;
-        }
-        return false;
+        return users.remove(user.getId(), user);
     }
 
     public synchronized void transfer(int fromId, int toId, int amount) {
         User2 userTempFirst = null;
         User2 userTempSecond = null;
-        if (users.get(fromId) != null) {
+        if (users.get(fromId) != null || users.get(toId) != null || userTempFirst.getAmount() > amount) {
             userTempFirst = users.get(fromId);
-        }
-        if (users.get(toId) != null) {
             userTempSecond = users.get(toId);
-        }
-        if (userTempFirst.getAmount() > amount) {
             userTempFirst.setAmount(userTempFirst.getAmount() - amount);
             userTempSecond.setAmount(userTempSecond.getAmount() + amount);
             update(userTempFirst);
