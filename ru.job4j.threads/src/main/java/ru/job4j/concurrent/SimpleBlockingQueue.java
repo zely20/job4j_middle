@@ -11,6 +11,11 @@ public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
+    private final int size;
+
+    public SimpleBlockingQueue(int size) {
+        this.size = size;
+    }
 
     public synchronized void offer(T value) {
         queue.add(value);
@@ -18,13 +23,9 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized T poll() throws InterruptedException{
-        if (queue.size() == 0) {
+        if (queue.size() == 0 || queue.size() == size) {
             this.wait();
         }
         return queue.poll();
-    }
-
-    public int size(){
-        return queue.size();
     }
 }

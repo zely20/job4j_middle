@@ -1,9 +1,5 @@
 import org.junit.Test;
 import ru.job4j.concurrent.SimpleBlockingQueue;
-import ru.job4j.concurrent.SingleLockList;
-
-import java.util.Set;
-import java.util.TreeSet;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -12,7 +8,7 @@ public class SimpleBlockingQueueTest {
 
     @Test
     public void test() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(size);
         Thread producer  = new Thread(() -> queue.offer(1));
         Thread consumer = new Thread(() -> {
             try {
@@ -30,7 +26,7 @@ public class SimpleBlockingQueueTest {
 
     @Test
     public void testTwo() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(size);
         Thread producer  = new Thread(() -> queue.offer(1));
         producer.start();
         producer.join();
