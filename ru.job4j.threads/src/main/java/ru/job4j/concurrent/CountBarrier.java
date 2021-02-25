@@ -6,21 +6,18 @@ public class CountBarrier {
 
     private int count = 0;
 
-    public  CountBarrier(final int total) {
+    public CountBarrier(final int total) {
         this.total = total;
     }
 
     public synchronized void count() {
-        for(int i = 0; i < total; i++){
-            count++;
-        }
+        count++;
     }
 
     public synchronized void await() throws InterruptedException {
-        if(count == total){
-            monitor.notifyAll();
-        } else {
+        if (count != total) {
             monitor.wait();
         }
+        monitor.notifyAll();
     }
 }
