@@ -22,12 +22,14 @@ public class SimpleBlockingQueue<T> {
             this.wait();
         }
         queue.add(value);
+        this.notifyAll();
     }
 
     public synchronized T poll() throws InterruptedException{
         if (queue.size() == 0) {
             this.wait();
         }
+        this.notifyAll();
         return queue.poll();
     }
 }
