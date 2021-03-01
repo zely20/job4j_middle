@@ -17,9 +17,9 @@ public class ParallelSearch {
                 }
         );
         consumer.start();
-        new Thread(
+        final  Thread producer = new Thread(
                 () -> {
-                    for (int index = 0; index != 3; index++) {
+                    for (int index = 0; index != 5; index++) {
                         try {
                             queue.offer(index);
                         } catch (InterruptedException e) {
@@ -32,7 +32,7 @@ public class ParallelSearch {
                         }
                     }
                 }
-
-        ).start();
+        );
+      producer.start();
     }
 }
