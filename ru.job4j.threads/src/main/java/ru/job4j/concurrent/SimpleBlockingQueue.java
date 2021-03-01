@@ -17,13 +17,15 @@ public class SimpleBlockingQueue<T> {
         this.size = size;
     }
 
-    public synchronized void offer(T value) {
+    public synchronized void offer(T value) throws InterruptedException{
+        if (queue.size() == size) {
+            this.wait();
+        }
         queue.add(value);
-        this.notifyAll();
     }
 
     public synchronized T poll() throws InterruptedException{
-        if (queue.size() == 0 || queue.size() == size) {
+        if (queue.size() == 0) {
             this.wait();
         }
         return queue.poll();
