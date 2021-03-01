@@ -12,10 +12,11 @@ public class CountBarrier {
 
     public synchronized void count() {
         count++;
+        monitor.notifyAll();
     }
 
     public synchronized void await() throws InterruptedException {
-        if (count != total) {
+        while (count != total) {
             monitor.wait();
         }
         monitor.notifyAll();
