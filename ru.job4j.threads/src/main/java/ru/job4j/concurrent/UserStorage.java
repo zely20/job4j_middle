@@ -32,7 +32,7 @@ public class UserStorage {
     public synchronized void transfer(int fromId, int toId, int amount) {
         User2 userTempFirst = null;
         User2 userTempSecond = null;
-        if (users.get(fromId) != null && users.get(toId) != null && userTempFirst.getAmount() >= amount) {
+        if (users.get(fromId) != null && users.get(toId) != null && users.get(fromId).getAmount() >= amount) {
             userTempFirst = users.get(fromId);
             userTempSecond = users.get(toId);
             userTempFirst.setAmount(userTempFirst.getAmount() - amount);
