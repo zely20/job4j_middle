@@ -4,12 +4,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ParallelSearch {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>(3);
-        final AtomicBoolean flag = new AtomicBoolean(false);
         final Thread consumer = new Thread(
                 () -> {
-                    while (!flag.get()) {
+                    while (!Thread.currentThread().isInterrupted()) {
                         try {
                             System.out.println(queue.poll());
                         } catch (InterruptedException e) {
@@ -34,9 +33,12 @@ public class ParallelSearch {
                             e.printStackTrace();
                         }
                     }
-                    flag.set(true);
                 }
         );
       producer.start();
+
+        producer.join();
+        consumer.interrupt();
+        consumer.join();
     }
 }
