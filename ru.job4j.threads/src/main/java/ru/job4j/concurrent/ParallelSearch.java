@@ -1,7 +1,5 @@
 package ru.job4j.concurrent;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class ParallelSearch {
 
     public static void main(String[] args) throws InterruptedException {
