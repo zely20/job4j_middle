@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
             int v;
             do {
                 v = count.get();
-            } while (!count.compareAndSet(v, v++));
+            } while (!count.compareAndSet(v, v+1));
         }
 
         public int get() {
