@@ -7,17 +7,13 @@ public class Main {
     public static void main(String[] args) {
         Map<Integer, Base> map = new HashMap<>();
         Base base = new Base(1, 0);
+        Cache cache = new Cache();
         map.put(base.getId(), base);
 
-        Base user1 = map.get(base);
+        Base user1 = map.get(base.getId());
         user1.setName("User 1");
 
-        Base user2 = map.get(base);
-        user1.setName("User 2");
+        cache.add(user1);
 
-        map.put(user1.getId(), user1);
-        map.put(user2.getId(), user2);
-
-        System.out.println(map);
     }
 }

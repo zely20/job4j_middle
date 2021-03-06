@@ -2,6 +2,7 @@ package ru.job4j.concurrent.cache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public class Cache {
     private final Map<Integer, Base> memory = new ConcurrentHashMap<>();
@@ -11,16 +12,11 @@ public class Cache {
     }
 
     public boolean update(Base model) {
-        if(checkVersion(model)) {
-           return memory.replace(model.getId(), model) != null;
-        }
-        return false;
+            return memory.computeIfAbsent(model.getId(), k-> new Base(model.getId(), model.getVersion()+1)) != null;
     }
 
     public void delete(Base model) {
-        if(checkVersion(model)) {
             memory.remove(model.getId(), model);
-        }
     }
 
     private boolean checkVersion(Base model) {
