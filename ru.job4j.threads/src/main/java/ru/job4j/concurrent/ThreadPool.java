@@ -9,9 +9,15 @@ public class ThreadPool {
     private volatile boolean isRunning = true;
 
     public void work(Runnable job) {
-        if(isRunning) {
+        try {
+            tasks.offer(job);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while (isRunning) {
             try {
-                tasks.offer(job);
+                Thread thread = new Thread(tasks.poll());
+                thread.start();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -20,5 +26,25 @@ public class ThreadPool {
 
     public void shutdown() {
         isRunning = false;
+    }
+}
+class Main2 {
+    public static void main(String[] args) {
+        ThreadPool pool = new ThreadPool();
+
+        Thread thread1 = new Thread(() -> {
+            for (int i = 0; i < 5; i++){
+                System.out.println(i);
+            }
+        });
+        Thread thread2 = new Thread(() -> {
+            for (int i = 7; i < 12; i++){
+                System.out.println(i);
+            }
+        });
+
+        pool.work(thread1);
+        pool.work(thread2);
+
     }
 }
