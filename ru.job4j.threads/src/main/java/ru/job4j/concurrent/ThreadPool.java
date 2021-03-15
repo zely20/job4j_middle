@@ -3,7 +3,7 @@ package ru.job4j.concurrent;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ThreadPool {
+public class ThreadPool extends Thread {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(Runtime.getRuntime().availableProcessors());
     private volatile boolean isRunning = true;
@@ -14,14 +14,19 @@ public class ThreadPool {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
-        try {
-            Thread thread = new Thread(tasks.poll());
-            thread.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    @Override
+    public void run() {
+        while (isRunning) {
+            Runnable runs = null;
+            try {
+                runs = tasks.poll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runs.run();
         }
-
     }
 
     public void shutdown() {
@@ -46,6 +51,7 @@ class Main2 {
 
         pool.work(thread1);
         pool.work(thread2);
+        pool.run();
         pool.shutdown();
     }
 }
