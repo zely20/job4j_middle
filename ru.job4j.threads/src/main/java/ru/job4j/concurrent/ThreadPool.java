@@ -35,24 +35,25 @@ public class ThreadPool extends Thread {
 }
 
 class Main2 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ThreadPool pool = new ThreadPool();
 
         Thread thread1 = new Thread(() -> {
             for (int i = 0; i < 5; i++) {
                 System.out.println(i);
             }
+            pool.shutdown();
         });
         Thread thread2 = new Thread(() -> {
             for (int i = 7; i < 12; i++) {
                 System.out.println(i);
             }
+            pool.shutdown();
         });
 
         pool.work(thread1);
         pool.work(thread2);
         pool.run();
-        pool.shutdown();
     }
 }
 
