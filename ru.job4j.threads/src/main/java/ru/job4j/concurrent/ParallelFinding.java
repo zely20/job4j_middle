@@ -21,7 +21,7 @@ public class ParallelFinding extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (to - from <= 10) {
-            for (int i = from; i < to; i++) {
+            for (int i = from; i <= to; i++) {
                 if (array[i] == value) {
                     return i;
                 }
@@ -29,15 +29,12 @@ public class ParallelFinding extends RecursiveTask<Integer> {
             return -1;
         }
         int mid = (from + to) / 2;
-        // создаем задачи для сортировки частей
         ParallelFinding leftSort = new ParallelFinding(array, value, from, mid);
         ParallelFinding rightSort = new ParallelFinding(array, value, mid + 1, to);
         leftSort.fork();
         rightSort.fork();
         int leftResult = leftSort.join();
-        System.out.println(leftResult);
         int rightResult = rightSort.join();
-        System.out.println(rightResult);
         return Math.max(leftResult, rightResult);
     }
 

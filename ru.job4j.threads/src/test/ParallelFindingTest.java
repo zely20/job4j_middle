@@ -18,7 +18,14 @@ public class ParallelFindingTest {
     @Test
     public void findValue(){
         int[] array = IntStream.range(1, 31).toArray();
-        int  result = ParallelFinding.findIndex(array, 14);
-        assertThat(result,is(13));
+        int  result = ParallelFinding.findIndex(array, 30);
+        assertThat(result,is(29));
+    }
+
+    @Test
+    public void findValueLot(){
+        int[] array = IntStream.range(1, 1_000_000).toArray();
+        int  result = ParallelFinding.findIndex(array, 100000);
+        assertThat(result,is(99999));
     }
 }
