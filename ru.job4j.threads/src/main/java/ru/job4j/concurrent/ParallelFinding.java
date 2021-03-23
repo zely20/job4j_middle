@@ -15,6 +15,8 @@ public class ParallelFinding extends RecursiveTask<Integer> {
         this.array = array;
         this.value = value;
         this.from = from;
+
+
         this.to = to;
     }
 
