@@ -22,7 +22,7 @@ public class ParallelFinding extends RecursiveTask<Integer> {
                 }
             }
         }
-
+       
         return -1;
     }
 
