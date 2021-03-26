@@ -55,7 +55,7 @@ class Main2 {
 
         pool.work(thread1);
         pool.work(thread2);
-        pool.shutdown();
+        //pool.shutdown();
     }
 }
 

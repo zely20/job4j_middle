@@ -1,5 +1,8 @@
 package ru.job4j.concurrent;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 public class RolColSum {
     public static class Sums {
         private int rowSum;
@@ -23,12 +26,11 @@ public class RolColSum {
     }
 
     public static Sums[] sum(int[][] matrix) {
-        Sums[] sums = new Sums[2 * matrix.length];
-
-        for (int i = 0; i < matrix.length; i++){
+        Sums[] sums = new Sums[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
             int resultRow = 0;
             int resultCol = 0;
-            for (int j = 0; j < matrix[i].length ; j++) {
+            for (int j = 0; j < matrix[i].length; j++) {
                 resultRow += matrix[i][j];
                 resultCol += matrix[j][i];
             }
@@ -39,7 +41,28 @@ public class RolColSum {
         return sums;
     }
 
-    public static Sums[] asyncSum(int[][] matrix) {
-        return new Sums[1];
+    public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
+        Sums[] sums = new Sums[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            sums[i] = new Sums();
+            sums[i].rowSum = getTask(matrix, i, true).get().intValue();
+            sums[i].colSum = getTask(matrix, i, false).get().intValue();
+        }
+
+        return sums;
+    }
+
+    private static CompletableFuture<Integer> getTask(int matrix[][], int row, boolean flag) {
+        return CompletableFuture.supplyAsync(() -> {
+            Integer sum = 0;
+            for (int i = 0; i < matrix.length; i++) {
+                if(flag == true) {
+                    sum += matrix[row][i];
+                } else {
+                    sum += matrix[i][row];
+                }
+            }
+            return sum;
+        });
     }
 }
