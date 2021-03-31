@@ -28,41 +28,36 @@ public class RolColSum {
     public static Sums[] sum(int[][] matrix) {
         Sums[] sums = new Sums[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
-            int resultRow = 0;
-            int resultCol = 0;
-            for (int j = 0; j < matrix[i].length; j++) {
-                resultRow += matrix[i][j];
-                resultCol += matrix[j][i];
-            }
-            sums[i] = new Sums();
-            sums[i].rowSum = resultRow;
-            sums[i].colSum = resultCol;
+            sums[i] = getTask(matrix, i);
         }
         return sums;
     }
+
+    private static Sums getTask(int[][] matrix, int i) {
+        int resultRow = 0;
+        int resultCol = 0;
+        for (int j = 0; j < matrix[i].length; j++) {
+            resultRow += matrix[i][j];
+            resultCol += matrix[j][i];
+        }
+        Sums sum = new Sums();
+        sum.rowSum = resultRow;
+        sum.colSum = resultCol;
+        return sum;
+    }
+
 
     public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
         Sums[] sums = new Sums[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
-            sums[i] = new Sums();
-            sums[i].rowSum = getTask(matrix, i, true).get().intValue();
-            sums[i].colSum = getTask(matrix, i, false).get().intValue();
+            sums[i] = getTask(matrix, i);
         }
-
         return sums;
     }
 
-    private static CompletableFuture<Integer> getTask(int matrix[][], int row, boolean flag) {
+ /*   private static CompletableFuture<Sums> getTask(int matrix[][], int index) {
         return CompletableFuture.supplyAsync(() -> {
-            Integer sum = 0;
-            for (int i = 0; i < matrix.length; i++) {
-                if(flag == true) {
-                    sum += matrix[row][i];
-                } else {
-                    sum += matrix[i][row];
-                }
-            }
-            return sum;
+            return getTask(matrix, index);
         });
-    }
+    }*/
 }
