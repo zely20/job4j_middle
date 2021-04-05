@@ -2,6 +2,7 @@ package ru.job4j.concurrent;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class RolColSum {
     public static class Sums {
@@ -28,36 +29,43 @@ public class RolColSum {
     public static Sums[] sum(int[][] matrix) {
         Sums[] sums = new Sums[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
-            sums[i] = getTask(matrix, i);
+            Sums sum = new Sums();
+            sum.rowSum = sumRow(matrix, i);
+            sum.colSum = sumCol(matrix, i);
+            sums[i] = sum;
         }
         return sums;
     }
 
-    private static Sums getTask(int[][] matrix, int i) {
-        int resultRow = 0;
-        int resultCol = 0;
-        for (int j = 0; j < matrix[i].length; j++) {
-            resultRow += matrix[i][j];
-            resultCol += matrix[j][i];
+    private static int sumRow(int [][] matrix, int index){
+        int result = 0;
+        for (int i = 0; i < matrix[index].length; i++){
+            result += matrix[index][i];
         }
-        Sums sum = new Sums();
-        sum.rowSum = resultRow;
-        sum.colSum = resultCol;
-        return sum;
+        return result;
     }
 
+    private static int sumCol(int [][] matrix, int index){
+        int result = 0;
+        for (int i = 0; i < matrix.length; i++){
+            result += matrix[i][index];
+        }
+        return result;
+    }
 
-    public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
+    public static Sums[] asyncSum(int matrix[][]) throws ExecutionException, InterruptedException {
         Sums[] sums = new Sums[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
-            sums[i] = getTask(matrix, i);
+            int index = i;
+            int sumRow = CompletableFuture.supplyAsync(() ->
+                    sumRow(matrix, index)).get();
+            int sumCol = CompletableFuture.supplyAsync(() ->
+                    sumCol(matrix,index)).get();
+            Sums sums1 = new Sums();
+            sums1.colSum = sumCol;
+            sums1.rowSum = sumRow;
+            sums[i] = sums1;
         }
         return sums;
     }
-
- /*   private static CompletableFuture<Sums> getTask(int matrix[][], int index) {
-        return CompletableFuture.supplyAsync(() -> {
-            return getTask(matrix, index);
-        });
-    }*/
 }
