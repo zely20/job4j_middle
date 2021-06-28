@@ -27,7 +27,7 @@ public class HubRunModel {
             skoda.setModels(kodiaq);
             skoda.setModels(octavia);
             skoda.setModels(karoq);
-            session.save(skoda);
+            session.persist(skoda);
             session.getTransaction().commit();
             session.close();
         }  catch (Exception e) {

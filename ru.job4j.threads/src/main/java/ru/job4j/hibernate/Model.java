@@ -3,6 +3,7 @@ package ru.job4j.hibernate;
 import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 @Table(name = "models")
 public class Model {
 
