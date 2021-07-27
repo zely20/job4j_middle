@@ -23,5 +23,7 @@
         <mapping class="ru.job4j.hibernate.Book"/>
         <mapping class="ru.job4j.hibernate.Author"/>
         <mapping class="ru.job4j.hql.Candidate"/>
+        <mapping class="ru.job4j.hql.BaseOfVacations"/>
+        <mapping class="ru.job4j.hql.Vacancy"/>
     </session-factory>
 </hibernate-configuration>
