@@ -13,7 +13,7 @@ public class MarkCar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "markcar")
     private List<Model> models = new ArrayList<>();
 
     public MarkCar() {
@@ -43,6 +43,10 @@ public class MarkCar {
 
     public void setModels(Model model){
         this.models.add(model);
+    }
+
+    public List<Model> getModels(){
+        return models;
     }
 
     @Override
