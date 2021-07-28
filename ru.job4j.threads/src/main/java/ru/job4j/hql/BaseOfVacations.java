@@ -17,7 +17,7 @@ public class BaseOfVacations {
     private Integer id;
     private String name;
     @OneToOne(fetch = FetchType.LAZY)
-    Candidate candidate;
+    private Candidate candidate;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Vacancy> vacancies = new ArrayList<>();
 
