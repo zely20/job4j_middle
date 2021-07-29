@@ -19,4 +19,12 @@ public class StartUI {
             System.out.println(value);
         }
     }
+
+    public String enterText() {
+        return consoleInput.askString("Enter text: ");
+    }
+
+    public int enterNumber() {
+        return consoleInput.askInt("Enter number: ");
+    }
 }
