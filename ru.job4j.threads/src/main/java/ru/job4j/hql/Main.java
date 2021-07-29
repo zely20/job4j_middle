@@ -37,9 +37,8 @@ public class Main {
             System.out.println("Find by name");
             query = session.createQuery("from Candidate c where c.name = :fName");
             query.setParameter("fName", "Alex");
-            System.out.println(query.uniqueResult());
+            query.getResultList().forEach(System.out::println);
             System.out.println("=============");
-
             query = session.createQuery(
                     "update Candidate c set c.name = :newName  where c.id = :fId"
             );
